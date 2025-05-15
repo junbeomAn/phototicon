@@ -15,7 +15,7 @@ bun dev
 ```
 
 # FSD 기반 Folder structure
-
+```
 /app
 ├─ layout.tsx # Root layout (글로벌 SCSS import 가능)
 ├─ page.tsx # 홈 페이지
@@ -44,3 +44,4 @@ bun dev
 FSD에서는 의존 방향이 항상 아래에서 위로만 흐르도록 권장한다.
 
 shared → entities → features → widgets → app
+```
