@@ -14,23 +14,33 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# FSD 기반 Folder structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+/app
+├─ layout.tsx # Root layout (글로벌 SCSS import 가능)
+├─ page.tsx # 홈 페이지
+├─ about/page.tsx # 라우트별 페이지
+├─ (auth)/login/page.tsx # 중첩 라우트
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+/src
+├─ entities/ # 도메인 단위 (유저, 포스트 등 핵심 모델)
+│ └─ user/
+│ ├─ model/ # types, 상태관리, API 등
+│ ├─ ui/ # 순수 UI 컴포넌트
+│ └─ lib/ # 유틸 함수, mapper 등
+├─ features/ # 유저 인터랙션 단위 (예: 로그인 폼)
+│ └─ auth/
+│ ├─ ui/ # <LoginForm /> 같은 UI
+│ └─ model/ # 상태, api 호출
+├─ shared/
+│ ├─ ui/ # 공통 버튼, 모달 등
+│ ├─ hooks/ # 커스텀 훅
+│ ├─ lib/ # 공통 유틸 함수
+│ ├─ constants/ # 상수
+│ ├─ types/ # 전역 타입 정의
+│ └─ styles/ # 글로벌 SCSS, mixins, variables
+├─ widgets/ # 블록 UI 조합 (예: Header, Sidebar)
 
-## Learn More
+FSD에서는 의존 방향이 항상 아래에서 위로만 흐르도록 권장한다.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+shared → entities → features → widgets → app
