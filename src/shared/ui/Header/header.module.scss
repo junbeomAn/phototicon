@@ -2,4 +2,10 @@
   display: flex;
   justify-content: space-between;
   padding: 4px 8px;
+  .next {
+
+    &.disabled {
+      color: rgb(124, 124, 124);
+    }
+  }
 }
