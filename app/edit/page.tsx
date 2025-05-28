@@ -1,9 +1,12 @@
+import PreventOverscroll from "@/ui/PreventOverscroll";
 import EditorPanel from "./(components)/EditorPanel";
 
 export default function Edit() {
   return (
     <main>
-      <EditorPanel />
+      <PreventOverscroll>
+        <EditorPanel />
+      </PreventOverscroll>
     </main>
   );
 }
