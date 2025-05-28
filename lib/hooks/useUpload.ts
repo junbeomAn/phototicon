@@ -1,5 +1,5 @@
-import { useImageStore } from "@/src/entities/image/model/store";
-import { ImageItem } from "@/src/entities/image/model/types";
+import { useImageStore } from "@/store/store";
+import { ImageItem } from "@/store/types";
 
 export default function useUpload() {
   const { images, addImages } = useImageStore();
@@ -11,6 +11,8 @@ export default function useUpload() {
     const newImages: ImageItem[] = Array.from(files).map((file) => ({
       file,
       previewSrc: URL.createObjectURL(file),
+      originX: 0,
+      originY: 0,
     }));
 
     addImages(newImages);

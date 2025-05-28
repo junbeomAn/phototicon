@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import useUpload from "../model/hooks/useUpload";
+import useUpload from "../../../lib/hooks/useUpload";
 
 import S from "./uploadForm.module.scss";
 
@@ -14,7 +14,7 @@ export default function UploadForm() {
 
   return (
     <div className={S.container}>
-      <section className={S.upload_panel} onClick={handleUploadClick}>
+      <section className={S.upload_form} onClick={handleUploadClick}>
         +
         <input
           type="file"

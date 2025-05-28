@@ -1,9 +1,11 @@
+@use "@/ui/constants";
+
 .container {
   display: flex;
   justify-content: space-between;
   padding: 4px 8px;
+  height: constants.$header_height;
   .next {
-
     &.disabled {
       color: rgb(124, 124, 124);
     }

@@ -1,9 +1,9 @@
-import EditorPanel from "@/src/widgets/EditorPanel/EditorPanel";
+import EditorPanel from "./(components)/EditorPanel";
 
 export default function Edit() {
   return (
-    <div>
+    <main>
       <EditorPanel />
-    </div>
+    </main>
   );
 }
