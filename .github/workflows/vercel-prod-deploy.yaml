@@ -1,0 +1,9 @@
+name: Vercel Production Deployment
+ env:
+   VERCEL_ORG_ID: $
+   VERCEL_PROJECT_ID: $
+    
+ on:
+   pull_request:
+     branches:
+       - "main"
