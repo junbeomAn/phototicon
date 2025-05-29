@@ -11,8 +11,11 @@ export default function useUpload() {
     const newImages: ImageItem[] = Array.from(files).map((file) => ({
       file,
       previewSrc: URL.createObjectURL(file),
-      originX: 0,
-      originY: 0,
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      zoomFactor: 1,
     }));
 
     addImages(newImages);

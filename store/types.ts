@@ -3,15 +3,15 @@
 export type ImageItem = {
   file: File;
   previewSrc: string;
-  originX: number;
-  originY: number;
+  offset: {
+    x: number;
+    y: number;
+  };
+  zoomFactor: number;
 };
 
 export type ImagePreviewProps = {
   image: Omit<ImageItem, "file">;
 };
 
-export type ImageStore = {
-  images: ImageItem[];
-  addImages: (image: ImageItem[]) => void;
-};
+export type ImageResizeInfo = Pick<ImageItem, "offset" | "zoomFactor">;
