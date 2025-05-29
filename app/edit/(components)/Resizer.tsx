@@ -22,12 +22,12 @@ export default function Resizer({ src, selectedIdx }: Props) {
   const setResizeInfo = useImageStore((store) => store.setResizeInfo);
   const images = useImageStore((store) => store.images);
 
-  const offset = images[selectedIdx].offset || { x: 0, y: 0 };
+  const offset = images[selectedIdx]?.offset || { x: 0, y: 0 };
 
   let firstMove = true;
   let firstTouches: Touches = [];
   let lastScale = 1;
-  let zoomFactor = images[selectedIdx].zoomFactor || 1;
+  let zoomFactor = images[selectedIdx]?.zoomFactor || 1;
   let nthZoom = 0;
   let lastCenter: Pos | null = null;
   let originLastCenter: Pos | null = null;
@@ -204,8 +204,11 @@ export default function Resizer({ src, selectedIdx }: Props) {
   }, []);
 
   useEffect(() => {
+    // execute only if src is changed
     update();
-  }, [update]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src]);
 
   return (
     <div

@@ -1,8 +1,13 @@
 import React from "react";
-import { HeaderProps } from "../../types";
 import S from "./header.module.scss";
 import Link from "next/link";
 import cn from "classnames";
+
+type HeaderProps = {
+  prev?: string;
+  next: string;
+  isNextDisabled: boolean;
+};
 
 export default function Header({ prev, next, isNextDisabled }: HeaderProps) {
   return (
