@@ -15,27 +15,31 @@ jobs:
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
           TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
 
+          cat <<EOF > discord-payload.json
+{
+  "embeds": [
+    {
+      "title": "📌 새 PR이 생성되었습니다!",
+      "description": "**제목:** ${PR_TITLE}",
+      "url": "${PR_URL}",
+      "fields": [
+        {
+          "name": "작성자",
+          "value": "${AUTHOR}",
+          "inline": true
+        },
+        {
+          "name": "브랜치",
+          "value": "${SOURCE_BRANCH} → ${TARGET_BRANCH}",
+          "inline": true
+        }
+      ]
+    }
+  ]
+}
+EOF
+
           curl -i -H 'Accept: application/json' \
             -H 'Content-Type: application/json' \
-            -X POST -d "{
-              \"embeds\": [
-                {
-                  \"title\": \"📌 새 PR이 생성되었습니다!\",
-                  \"description\": \"**제목:** ${PR_TITLE}\",
-                  \"url\": \"${PR_URL}\",
-                  \"fields\": [
-                    {
-                      \"name\": \"작성자\",
-                      \"value\": \"${AUTHOR}\",
-                      \"inline\": true
-                    },
-                    {
-                      \"name\": \"브랜치\",
-                      \"value\": \"${SOURCE_BRANCH} → ${TARGET_BRANCH}\",
-                      \"inline\": true
-                    }
-                  ]
-                }
-              ]
-            }" \
+            -X POST -d @discord-payload.json \
             ${{ secrets.DISCORD_WEBHOOK }}
