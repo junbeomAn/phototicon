@@ -49,9 +49,9 @@ jobs:
       - name: Notify Success (성공)
         if: success()
         run: |
-          DEPLOYER=${{ github.event.sender.login }}
-          PR_TITLE=${{ github.event.pull_request.title }}
-          PR_URL=${{ github.event.pull_request.html_url }}
+          DEPLOYER="${{ github.event.sender.login }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
 
           cat <<EOF > discord-payload.json
           {
@@ -80,9 +80,9 @@ jobs:
       - name: Notify Discord (실패)
         if: failure()
         run: |
-          RUN_ID=${{ github.run_id }}
-          REPO=${{ github.repository }}
-          ACTOR=${{ github.actor }}
+          RUN_ID="${{ github.run_id }}"
+          REPO="${{ github.repository }}"
+          ACTOR="${{ github.actor }}"
           JOB_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
 
           cat <<EOF > discord-payload.json
@@ -90,7 +90,7 @@ jobs:
             "embeds": [{
               "title": "❌ 배포 실패!",
               "description": "**배포자:** ${ACTOR}",
-              "url": ${JOB_URL},
+              "url": "${JOB_URL}",
               "color": 15158332
             }]
           }
