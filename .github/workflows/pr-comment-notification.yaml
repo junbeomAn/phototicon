@@ -19,6 +19,6 @@ jobs:
           curl -i -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
           -X POST -d "{
-            \"content\": \"💬 *${PR_TITLE}* PR에 댓글이 달렸습니다!\n*작성자:* ${AUTHOR}\n*내용:* ${BODY}\n<${COMMENT_URL}|댓글 보기>\"
+            \"content\": \"💬 [**${PR_TITLE}**]  PR에 댓글이 달렸습니다!\n*작성자:* ${AUTHOR}\n*내용:* ${BODY}\n<${COMMENT_URL}|댓글 보기>\"
           }" \
           ${{ secrets.DISCORD_WEBHOOK }}
