@@ -16,26 +16,26 @@ jobs:
           TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
 
           curl -i -H 'Accept: application/json' \
-            -H "Content-Type: application/json" \
-            -X POST -d '{
-              "embeds": [
+            -H 'Content-Type: application/json' \
+            -X POST -d "{
+              \"embeds\": [
                 {
-                  "title": "📌 새 PR이 생성되었습니다!",
-                  "description": "**제목:** ${PR_TITLE}",
-                  "url": "${PR_URL}",
-                  "fields": [
+                  "\title"\: "\📌 새 PR이 생성되었습니다!"\,
+                  "\description"\: "\**제목:** ${PR_TITLE}"\,
+                  "\url"\: "\${PR_URL}"\,
+                  "\fields"\: [
                     {
-                      "name": "작성자",
-                      "value": "${AUTHOR}",
-                      "inline": true
+                      "\name"\: "\작성자"\,
+                      "\value"\: "\${AUTHOR}"\,
+                      "\inline"\: true
                     },
                     {
-                      "name": "브랜치",
-                      "value": "${SOURCE_BRANCH} → ${TARGET_BRANCH}",
-                      "inline": true
+                      "\name"\: "\브랜치"\,
+                      "\value"\: "\${SOURCE_BRANCH} → ${TARGET_BRANCH}"\,
+                      "\inline"\: true
                     }
                   ]
                 }
               ]
-            }' \
-            ${{ secrets.DISCORD_WEBHOOK }} \
+            }" \
+            ${{ secrets.DISCORD_WEBHOOK }}
