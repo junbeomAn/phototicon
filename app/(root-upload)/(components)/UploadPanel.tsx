@@ -19,7 +19,7 @@ export default function UploadPanel() {
             </li>
           ))}
         </ul>
-        {images.length === 0 && <h3>이미지를 추가하세요</h3>}
+        {images.length === 0 && <h3>이미지를 추가하세요!</h3>}
       </div>
       <UploadForm />
     </section>
