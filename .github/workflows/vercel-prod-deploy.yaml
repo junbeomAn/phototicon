@@ -2,14 +2,13 @@ name: Vercel Production Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-    
+
 on:
   pull_request:
     branches:
       - "main"
     types:
       - "closed"
-
 
 jobs:
   Prod-Deploy:
@@ -26,6 +25,7 @@ jobs:
 
       - name: Create deployment branch
         run: |
+          export TZ=Asia/Seoul
           DATE=$(date +'%Y%m%d-%H%M%S')
           DEPLOY_BRANCH="deploy-${DATE}"
           git checkout -b $DEPLOY_BRANCH
@@ -45,5 +45,48 @@ jobs:
       - name: Deploy Project Artifacts
         run: |
           vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-          
-    
+
+      - name: Notify Success (성공)
+        if: ${{ success() }}
+        run: |
+          DEPLOYER=${{ github.event.sender.login }}
+          PR_TITLE=${{ github.event.pull_request.title }}
+          PR_URL=${{ github.event.pull_request.html_url }}
+
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [
+                {
+                  "title": "✅ **배포 완료!**",
+                  "description": "**제목:** ${PR_TITLE}",
+                  "url": "${PR_URL}",
+                  "fields": [
+                    {
+                      "name": "배포자",
+                      "value": "${DEPLOYER}",
+                      "inline": true
+                    }
+                  ]
+                }
+              ]
+            }'
+
+      - name: Notify Discord (실패)
+        if: ${{ failure() }}
+        run: |
+          RUN_ID=${{ github.run_id }}
+          REPO=${{ github.repository }}
+          ACTOR=${{ github.actor }}
+          JOB_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }}
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "❌ 배포 실패!",
+              "description": "**배포자:** ${ACTOR}",
+              "url": ${JOB_URL},
+              "color": 15158332
+            }]
+          }'
