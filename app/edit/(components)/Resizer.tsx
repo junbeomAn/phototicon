@@ -205,7 +205,7 @@ export default function Resizer({ src, selectedIdx }: Props) {
 
   useEffect(() => {
     // execute only if src is changed
-    update();
+    updat();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
