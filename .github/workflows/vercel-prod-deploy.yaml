@@ -47,7 +47,7 @@ jobs:
           vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Notify Success (성공)
-        if: ${{ success() }}
+        if: success()
         run: |
           DEPLOYER=${{ github.event.sender.login }}
           PR_TITLE=${{ github.event.pull_request.title }}
@@ -73,7 +73,7 @@ jobs:
             }'
 
       - name: Notify Discord (실패)
-        if: ${{ failure() }}
+        if: failure()
         run: |
           RUN_ID=${{ github.run_id }}
           REPO=${{ github.repository }}
