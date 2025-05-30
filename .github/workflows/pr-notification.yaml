@@ -1,9 +1,8 @@
 name: Notify DISCORD on PR Opened
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
+    types: [opened, reopened]
+
 jobs:
   Notify-PR-Open:
     runs-on: ubuntu-latest
@@ -16,9 +15,9 @@ jobs:
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
           TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
 
-          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+          curl -i -H 'Accept: application/json' \
             -H "Content-Type: application/json" \
-            -d '{
+            -X POST -d '{
               "embeds": [
                 {
                   "title": "📌 새 PR이 생성되었습니다!",
@@ -38,4 +37,5 @@ jobs:
                   ]
                 }
               ]
-            }'
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK }} \
