@@ -1,0 +1,24 @@
+name: Notify DISCORD on PR Comment
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  Notify-PR-Comment:
+    if: github.event.issue.pull_request != null
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord message
+        run: |
+          COMMENT_URL="${{ github.event.comment.html_url }}"
+          AUTHOR="${{ github.event.comment.user.login }}"
+          BODY="${{ github.event.comment.body }}"
+          PR_TITLE="${{ github.event.issue.title }}"
+
+          curl -i -H 'Accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -X POST -d "{
+            \"content\": \"💬 *${PR_TITLE}* PR에 댓글이 달렸습니다!\n*작성자:* ${AUTHOR}\n*내용:* ${BODY}\n<${COMMENT_URL}|댓글 보기>\"
+          }" \
+          ${{ secrets.DISCORD_WEBHOOK }}
