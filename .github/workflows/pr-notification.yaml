@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Send Discord message
         run: |
-          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_TITLE='${{ github.event.pull_request.title }}'
           PR_URL="${{ github.event.pull_request.html_url }}"
           AUTHOR="${{ github.actor }}"
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"

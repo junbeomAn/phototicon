@@ -13,8 +13,8 @@ jobs:
         run: |
           COMMENT_URL="${{ github.event.comment.html_url }}"
           AUTHOR="${{ github.event.comment.user.login }}"
-          BODY="${{ github.event.comment.body }}"
-          PR_TITLE="${{ github.event.issue.title }}"
+          BODY='${{ github.event.comment.body }}'
+          PR_TITLE='${{ github.event.issue.title }}'
 
           curl -i -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
