@@ -50,7 +50,8 @@ jobs:
         if: success()
         run: |
           DEPLOYER="${{ github.event.sender.login }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_TITLE='${{ github.event.pull_request.title }}'
+          ESCAPED_TITLE=$(echo "$PR_TITLE" | sed 's/"/\\\"/g')
           PR_URL="${{ github.event.pull_request.html_url }}"
 
           cat <<EOF > discord-payload.json
@@ -58,7 +59,7 @@ jobs:
             "embeds": [
               {
                 "title": "✅ **배포 완료!**",
-                "description": "**제목:** ${PR_TITLE}",
+                "description": "**제목:** ${ESCAPED_TITLE}",
                 "url": "${PR_URL}",
                 "fields": [
                   {
