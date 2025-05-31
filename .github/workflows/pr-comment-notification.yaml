@@ -14,11 +14,13 @@ jobs:
           COMMENT_URL="${{ github.event.comment.html_url }}"
           AUTHOR="${{ github.event.comment.user.login }}"
           BODY='${{ github.event.comment.body }}'
+          ESCAPED_BODY=$(echo "$BODY" | sed 's/"/\\"/g')
           PR_TITLE='${{ github.event.issue.title }}'
+          ESCAPED_TITLE=$(echo "$PR_TITLE" | sed 's/"/\\\"/g')
 
           curl -i -H 'Accept: application/json' \
           -H 'Content-Type: application/json' \
           -X POST -d "{
-            \"content\": \"💬 [**${PR_TITLE}**]  PR에 댓글이 달렸습니다!\n*작성자:* ${AUTHOR}\n*내용:* ${BODY}\n<${COMMENT_URL}|댓글 보기>\"
+            \"content\": \"💬 [**${ESCAPED_TITLE}**]  PR에 댓글이 달렸습니다!\n*작성자:* ${AUTHOR}\n*내용:* ${ESCAPED_BODY}\n<${COMMENT_URL}|댓글 보기>\"
           }" \
           ${{ secrets.DISCORD_WEBHOOK }}

@@ -10,6 +10,7 @@ jobs:
       - name: Send Discord message
         run: |
           PR_TITLE='${{ github.event.pull_request.title }}'
+          ESCAPED_TITLE=$(echo "$PR_TITLE" | sed 's/"/\\\"/g')
           PR_URL="${{ github.event.pull_request.html_url }}"
           AUTHOR="${{ github.actor }}"
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
@@ -20,7 +21,7 @@ jobs:
             "embeds": [
               {
                 "title": "📌 새 PR이 생성되었습니다!",
-                "description": "**제목:** ${PR_TITLE}",
+                "description": "**제목:** ${ESCAPED_TITLE}",
                 "url": "${PR_URL}",
                 "fields": [
                   {
