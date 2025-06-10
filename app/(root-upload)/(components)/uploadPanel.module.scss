@@ -28,16 +28,17 @@
         border-radius: 8px;
         border: 1px solid #c9c9c9;
         box-shadow: 0 0 1px 0px white inset, 0 0 1px 0px white;
+
         flex: 0 0 auto;
         overflow: hidden;
-        width: 200px;
+        width: 250px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
-          width: 200px;
-          // height: 250px;
-          transform: scale(0.4);
-          // object-fit: none;
-          // object-position: 50% 50%;
+          max-height: 300px;
         }
       }
       li + li {
