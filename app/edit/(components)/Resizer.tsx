@@ -61,12 +61,6 @@ export default function Resizer({ src, selectedIdx }: Props) {
   };
 
   const update = () => {
-    console.log(offset, zoomFactor, -offset.x / zoomFactor);
-    console.log(
-      imgRef.current?.width,
-      imgRef.current?.height,
-      document.body.clientWidth
-    );
     setTimeout(() => {
       if (imgRef.current) {
         imgRef.current.style.transform = `scale(${zoomFactor}) translate(${
