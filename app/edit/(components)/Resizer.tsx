@@ -36,30 +36,37 @@ export default function Resizer({ src, selectedIdx }: Props) {
   const minZoomFactor = 1;
   const maxZoomFactor = 2.5;
 
-  function resetLastZoom() {
+  const resetLastZoom = () => {
     firstMove = true;
     lastScale = 1;
     nthZoom = 0;
-  }
+  };
 
-  function getDist(a: Pos, b: Pos) {
+  const getDist = (a: Pos, b: Pos) => {
     return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-  }
+  };
 
-  function getRelativeTouches<T>(e: TouchEvent<T>) {
+  const getRelativeTouches = <T,>(e: TouchEvent<T>) => {
     return Array.from(e.touches).map((touch) => ({
       x: touch.pageX - firstRectRef.current!.left,
       y: touch.pageY - firstRectRef.current!.top,
     }));
-  }
-  function getCenter(pos: Pos[]) {
+  };
+
+  const getCenter = (pos: Pos[]) => {
     return {
       x: pos.reduce((acc, touch) => acc + touch.x, 0) / pos.length,
       y: pos.reduce((acc, touch) => acc + touch.y, 0) / pos.length,
     };
-  }
+  };
 
-  function update() {
+  const update = () => {
+    console.log(offset, zoomFactor, -offset.x / zoomFactor);
+    console.log(
+      imgRef.current?.width,
+      imgRef.current?.height,
+      document.body.clientWidth
+    );
     setTimeout(() => {
       if (imgRef.current) {
         imgRef.current.style.transform = `scale(${zoomFactor}) translate(${
@@ -67,28 +74,28 @@ export default function Resizer({ src, selectedIdx }: Props) {
         }px, ${-offset.y / zoomFactor}px)`;
       }
     }, 0);
-  }
+  };
 
-  function adjustOffset(factor: number, center: Pos) {
+  const adjustOffset = (factor: number, center: Pos) => {
     offset.x += (factor - 1) * (center.x + offset.x);
     offset.y += (factor - 1) * (center.y + offset.y);
-  }
+  };
 
-  function getTouches(touches: TouchList) {
+  const getTouches = (touches: TouchList) => {
     return Array.from(touches).map((touch) => ({
       x: touch.pageX,
       y: touch.pageY,
     }));
-  }
+  };
 
-  function getNextScale(firstTouches: Touches, currTouches: Touches) {
+  const getNextScale = (firstTouches: Touches, currTouches: Touches) => {
     const firstDist = getDist(firstTouches[0], firstTouches[1]);
     const lastDist = getDist(currTouches[0], currTouches[1]);
 
     return lastDist / firstDist;
-  }
+  };
 
-  function getNextZoomFactor(growth: number, leastWeight: number) {
+  const getNextZoomFactor = (growth: number, leastWeight: number) => {
     const isZoomIn = growth > 1;
     const isZoomOut = !isZoomIn;
 
@@ -101,9 +108,9 @@ export default function Resizer({ src, selectedIdx }: Props) {
     } else {
       return growth;
     }
-  }
+  };
 
-  function scale<T>(e: TouchEvent<T>) {
+  const scale = <T,>(e: TouchEvent<T>) => {
     if (firstMove) {
       firstTouches = getTouches(e.touches);
       firstMove = false;
@@ -129,16 +136,16 @@ export default function Resizer({ src, selectedIdx }: Props) {
 
     adjustOffset(factor, center);
     update();
-  }
+  };
 
-  function drag(center: Pos) {
+  const drag = (center: Pos) => {
     if (lastCenter) {
       offset.x += -(center.x - lastCenter.x);
       offset.y += -(center.y - lastCenter.y);
     }
     lastCenter = center;
     update();
-  }
+  };
 
   const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
     const center = getCenter(getRelativeTouches(e));
@@ -168,6 +175,60 @@ export default function Resizer({ src, selectedIdx }: Props) {
     update();
   };
 
+  const handleOverDrag = (
+    initSize: number,
+    containerSize: number,
+    zoomFactor: number,
+    currentOffset: number,
+    baseLimit: number
+  ) => {
+    const zoomedSize = zoomFactor * initSize;
+
+    if (zoomedSize < containerSize) {
+      // center image if size is smaller than container
+      return baseLimit - (containerSize - zoomedSize) / 2;
+    } else {
+      if (currentOffset < baseLimit) {
+        // limit offset to base
+        return baseLimit;
+      } else if (currentOffset > baseLimit + (zoomedSize - containerSize)) {
+        // limit offset to opposite side base
+        return baseLimit + (zoomedSize - containerSize);
+      }
+      return currentOffset;
+    }
+  };
+
+  const correctOverDrag = () => {
+    if (!imgRef.current) return;
+
+    const { width: initImgWidth, height: initImgHeight } = imgRef.current;
+    const { clientWidth: resizerWidth } = document.body;
+    const resizerHeight = initImgHeight;
+
+    // Handle horizontal drag
+    const leftLimit = (resizerWidth - initImgWidth) / 2;
+    offset.x = handleOverDrag(
+      initImgWidth,
+      resizerWidth,
+      zoomFactor,
+      offset.x,
+      leftLimit
+    );
+
+    // Handle vertical drag
+    const topLimit = 0;
+    offset.y = handleOverDrag(
+      initImgHeight,
+      resizerHeight,
+      zoomFactor,
+      offset.y,
+      topLimit
+    );
+
+    update();
+  };
+
   const handleTouchEnd: TouchEventHandler<HTMLDivElement> = (e) => {
     if (lastCenter) {
       // 줌 끝낼때 초기화 기준이 되는 originLastCenter 할당
@@ -183,6 +244,7 @@ export default function Resizer({ src, selectedIdx }: Props) {
       originLastCenter = null;
       isZooming = false;
     }
+    correctOverDrag();
   };
 
   const resetLastDrag = () => {
