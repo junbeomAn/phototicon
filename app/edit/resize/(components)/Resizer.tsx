@@ -8,7 +8,7 @@ import {
   useRef,
 } from "react";
 import S from "./resizer.module.scss";
-import { Pos, Touch, Touches } from "./types";
+import { Pos, Touch, Touches } from "../../(components)/types";
 import { useImageStore } from "@/store/store";
 
 type Props = {
