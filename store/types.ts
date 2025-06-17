@@ -8,7 +8,10 @@ export type ImageItem = {
     y: number;
   };
   zoomFactor: number;
+  subtitle: string;
 };
+
+export type NewImageItem = Pick<ImageItem, "file" | "previewSrc">;
 
 export type ImagePreviewProps = {
   image: Omit<ImageItem, "file">;

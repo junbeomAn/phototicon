@@ -16,7 +16,7 @@ export default function Resize() {
 
   return (
     <PreventOverscroll>
-      <Header next={"/edit/subtitle"} isNextDisabled={false} />
+      <Header next={"/edit/decorate"} isNextDisabled={false} />
       <section className={S.container}>
         <Resizer src={selectedImage?.previewSrc} selectedIdx={selectedIdx} />
         <ImageSelect handleSelect={handleSelect} selectedIdx={selectedIdx} />
