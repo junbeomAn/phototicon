@@ -8,7 +8,7 @@ import {
   useRef,
 } from "react";
 import S from "./resizer.module.scss";
-import { Pos, Touch, Touches } from "./types";
+import { Pos, Touch, Touches } from "../../(components)/types";
 import { useImageStore } from "@/store/store";
 
 type Props = {
@@ -267,7 +267,7 @@ export default function Resizer({ src, selectedIdx }: Props) {
   }, [src]);
 
   return (
-    <div
+    <section
       className={S.image_resizer}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -275,6 +275,6 @@ export default function Resizer({ src, selectedIdx }: Props) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="selected image" ref={imgRef} />
-    </div>
+    </section>
   );
 }
