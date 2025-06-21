@@ -9,7 +9,7 @@ import {
 } from "react";
 import S from "./resizer.module.scss";
 import { Pos, Touch, Touches } from "../../(components)/types";
-import { useImageStore } from "@/store/store";
+import { useImageActions, useImages } from "@/store/store";
 
 type Props = {
   src: string;
@@ -19,8 +19,8 @@ type Props = {
 export default function Resizer({ src, selectedIdx }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const firstRectRef = useRef<DOMRect>(null);
-  const setResizeInfo = useImageStore((store) => store.setResizeInfo);
-  const images = useImageStore((store) => store.images);
+  const { setResizeInfo } = useImageActions();
+  const images = useImages();
 
   const offset = images[selectedIdx]?.offset || { x: 0, y: 0 };
 

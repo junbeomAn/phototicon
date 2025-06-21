@@ -11,6 +11,13 @@ export type ImageItem = {
   subtitle: string;
 };
 
+type Subtitle = {
+  x: number;
+  y: number;
+  content: string;
+  fontIndex: number;
+}
+
 export type NewImageItem = Pick<ImageItem, "file" | "previewSrc">;
 
 export type ImagePreviewProps = {

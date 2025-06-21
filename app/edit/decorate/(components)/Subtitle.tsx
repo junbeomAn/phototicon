@@ -3,7 +3,7 @@
 import React from "react";
 
 import S from "./subtitle.module.scss";
-import { useImageStore } from "@/store/store";
+import { useImageActions, useImages } from "@/store/store";
 
 type Props = {
   onClose: () => void;
@@ -11,7 +11,8 @@ type Props = {
 };
 
 export default function Subtitle({ onClose, selectedIdx }: Props) {
-  const { images, setSubtitle } = useImageStore();
+  const images = useImages();
+  const { setSubtitle } = useImageActions();
 
   return (
     <div className={S.overlay} onClick={onClose}>

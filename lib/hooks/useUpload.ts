@@ -1,8 +1,9 @@
-import { useImageStore } from "@/store/store";
+import { useImageActions, useImages } from "@/store/store";
 import { NewImageItem } from "@/store/types";
 
 export default function useUpload() {
-  const { images, addImages } = useImageStore();
+  const images = useImages();
+  const { addImages } = useImageActions();
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;

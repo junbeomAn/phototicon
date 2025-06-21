@@ -1,4 +1,4 @@
-import { useImageStore } from "@/store/store";
+import { useImages } from "@/store/store";
 import S from "./imageSelect.module.scss";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function ImageSelect({ handleSelect, selectedIdx }: Props) {
-  const images = useImageStore((store) => store.images);
+  const images = useImages();
 
   return (
     <ul className={S.container}>

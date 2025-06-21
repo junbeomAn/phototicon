@@ -4,10 +4,10 @@ import S from "./uploadPanel.module.scss";
 
 import ImagePreview from "@/ui/ImagePreview";
 import UploadForm from "./UploadForm";
-import { useImageStore } from "@/store/store";
+import { useImages } from "@/store/store";
 
 export default function UploadPanel() {
-  const images = useImageStore((store) => store.images);
+  const images = useImages();
 
   return (
     <section className={S.container}>
